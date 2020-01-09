@@ -9,7 +9,7 @@ When installing Analytics tracking code on a site that uses iframes, extra care 
 The 2 most common errors with tracking iframes I have encountered so far is:
 
 {: .box-error}
-**Error:** recording double page views and not being able to retain campaign or referral attribution.
+Recording **double page views** and not being able to retain **campaign or referral attribution**.
 
 Google Analytics will track all page hits by default, but in the case of an iframe (child frame), it will only track the page hit of the main website (parent frame) and all user behavior within the iframe will be lost. An iframe is basically a website within a website.
 
