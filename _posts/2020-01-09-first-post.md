@@ -6,9 +6,9 @@ tags: [gtm]
 comments: true
 ---
 When installing Analytics tracking code on a site that uses iframes, extra care needs to be taken to ensure that traffic is tracked accurately. 
-The 2 most common problems with tracking iframes I have encountered so far is
-1. recording double page views and 
-2. not being able to retain campaign or referral attribution.
+The 2 most common problems with tracking iframes I have encountered so far is:
+1.  recording double page views and 
+2.  not being able to retain campaign or referral attribution.
 
 Google Analytics will track all page hits by default, but in the case of an iframe, it will only track the page hit of the parent frame and all user behavior within the iframe will be lost. An iframe is basically a website within a website.
 In order to track user interactions happening within the iframe, you need to have access to the HTML code of the iframe.
