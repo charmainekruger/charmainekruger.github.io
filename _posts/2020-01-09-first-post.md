@@ -11,7 +11,9 @@ The 2 most common errors with tracking iframes I have encountered so far is:
 {: .box-error}
 Recording **double page views** and not being able to retain **campaign or referral attribution**.
 
-Google Analytics will track all page hits by default, but in the case of an iframe (child frame), it will only track the page hit of the main website (parent frame) and all user behavior within the iframe will be lost. An iframe is basically a website within a website.
+An iframe is basically a website within a website. In this post, I will refer to the main website as the parent frame and the iframe as the child frame.
+
+Google Analytics will track all page hits of the parent frame by default, but in the case of an iframe, it will only track the page hit of the parent frame and all user behavior within the iframe will be lost. 
 
 **What do you need to track user behavior within the iframe?**
 *  You need to have access to add some tracking snippets to the HTML code of the iframe.
