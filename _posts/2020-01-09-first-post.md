@@ -15,6 +15,8 @@ An iframe is basically a website within a website. In this post, I will refer to
 
 Google Analytics will track all page hits of the parent frame by default, but in the case of an iframe, it will only track the page hit of the parent frame and all user behavior within the iframe will be lost. 
 
+The solution: postMessage
+
 **What do you need to track user behavior within the iframe?**
 *  You need to have access to add some tracking snippets to the HTML code of the iframe.
 *  You need to send a message from the child iframe to the parent frame whenever a user interaction happened within the iframe.
@@ -102,3 +104,4 @@ You can add notification, warning and error boxes like this:
 
 {: .box-error}
 **Error:** This is an error box.
+
