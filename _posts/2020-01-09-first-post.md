@@ -12,20 +12,26 @@ Fastforward to a couple of years later and I still regularly encounter client we
 
 
 **Why is it so difficult to track iframes?**
+
 An iframe is basically a website within a website.
 If you only put an analytics tracking snippet on the outer (parent) website, you will be blind to the user interactions happening within the inner (iframe) website, as it iwill only track the page hit of the parent frame.
 If you put the same tracking snippet on the iframe as well, you will get double page views and if the parent website and the iframes are on different domains, you will lose campaign or referral attribution of the hits.
 
 **Is there a solution?**
+
 Yes, there are a couple of solutions, I will discuss 2 of my favorite solutions below.
 
 ## Solution 1: postMessage
 
 postMessage is a browser functionality that allows you to send messages between the iframe and the parent frame (main website).
-When I started my measurement career, the postMessage API was not around. Stuck in my iframe-inception world, I wished for a solution that would allow me to send a message from the child iframe to the parent frame whenever a user interaction happened within the iframe. 
-Looks like dreams do sometimes come true, because these days browsers all support the postMessage API.
+When I started my measurement career, the postMessage API was not around, which left me stuck in my iframe-inception world, but these days browsers all support the postMessage API.
 
-So, all you need to do is to send a message from the child iframe to the parent frame whenever a user interaction happened within the iframe. Then you need to listen for the message from the child iframe on the parent frame. The last step is to catch the message on the parent frame and push an event into the DataLayer which can then be used to propagate analytics hits.
+**Basic overview of the solution:**
+
+* Send a message from the child iframe to the parent frame whenever a user interaction happened within the iframe. 
+* Listen for the message from the child iframe on the parent frame. 
+* Catch the message on the parent frame and push an event into the DataLayer.
+* Propagate analytics hits.
 
 **Step-by-step instructions:**
 
