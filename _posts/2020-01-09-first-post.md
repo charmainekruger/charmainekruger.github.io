@@ -41,9 +41,10 @@ As an example I have created a simple iframe below that is using a simple html f
 I also already have a Google Tag Manager and Google Analytic implemented on this website.
 
 1. Create a new Google Tag Manager container for your iframe (you can use the same container or a different container, my personal preference is keeping them in separate containers in the same account).
+2. Add the GTM container snippet you created above to your iframe according to [these instructions][https://developers.google.com/tag-manager/quickstart]. 
 2. Create new tag --> Custom HTML
 
-3. Apart from the custom HTML tag you created above, don't set up any other tracking in this new container.
+3. Apart from the custom HTML tag you created above, don't implent anything else in this new container.
 
 **Pro's:**
 * postMessage provides a safe means of communication between frames on different domains while still offering protection from cross-site scripting attacks.
