@@ -5,11 +5,12 @@ title: Tracking in an iFrame using Google Tag Manager
 tags: [gtm,google tag manager,iframe]
 comments: true
 ---
-When installing Analytics tracking code on a site that uses iframes, extra care needs to be taken to ensure that traffic is tracked accurately. 
+Tracking iframes on a website can be tricky.
+Extra care needs to be taken to ensure that traffic is tracked accurately. 
 The 2 most common errors with tracking iframes I have encountered so far is:
 
 {: .box-error}
-Recording **double page views** and not being able to retain **campaign or referral attribution**.
+Recording * double page views** and not being able to retain * campaign or referral attribution**.
 
 An iframe is basically a website within a website. In this post, I will refer to the main website as the parent frame and the iframe as the child frame.
 
