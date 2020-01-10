@@ -38,11 +38,15 @@ As an example I have created a simple iframe that pulls in a webpage that is hos
 
 <iframe id="testIframe" src="https://phillip-kruger.github.io/testPage.html"></iframe>
 
-I already have a Google Tag Manager and Google Analytic implemented on my main website.
+I already have a Google Tag Manager and Google Analytics implemented on my main website.
 
 1. Create a new Google Tag Manager container for your iframe (you can use the same container or a different container, my personal preference is keeping them in separate containers in the same account).
 2. Add the GTM container snippet you created above to your iframe according to [these instructions](https://developers.google.com/tag-manager/quickstart). 
-2. Create new tag --> Custom HTML
+3. In the new iframe GTM container:
+
+**Tag Configuration for this example:**
+Tag type: Custom HTML
+Trigger:
 
 3. Apart from the custom HTML tag you created above, don't implent anything else in this new container.
 
