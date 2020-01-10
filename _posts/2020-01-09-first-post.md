@@ -44,7 +44,7 @@ When I started my measurement career, the postMessage API was not around, which 
 *  You need to have access to add some tracking snippets to the HTML code of the iframe.
 
 
-<iframe src="https://https://charmainekruger.github.io/">bla bla</iframe>
+<iframe id="testIframe" src="testPage"></iframe>
 
 
 ## Solution 2: customTask
