@@ -3,5 +3,6 @@ layout: page
 title: About me
 ---
 
-My name is Charmaine.
+Measurement is a science 
+
 
