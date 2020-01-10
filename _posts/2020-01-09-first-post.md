@@ -34,6 +34,9 @@ When I started my measurement career, the postMessage API was not around, which 
 * Propagate analytics hits.
 
 **Step-by-step instructions:**
+As an example I have created a simple iframe below that is using a simple html form that is hosted on a different domain as source.
+
+<iframe id="testIframe" src="https://phillip-kruger.github.io/testPage.html"></iframe>
 
 **Pro's:**
 * postMessage provides a safe means of communication between frames on different domains while still offering protection from cross-site scripting attacks.
@@ -44,7 +47,7 @@ When I started my measurement career, the postMessage API was not around, which 
 *  You need to have access to add some tracking snippets to the HTML code of the iframe.
 
 
-<iframe id="testIframe" src="https://phillip-kruger.github.io/testPage.html"></iframe>
+
 
 
 ## Solution 2: customTask
