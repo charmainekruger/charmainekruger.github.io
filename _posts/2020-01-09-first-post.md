@@ -5,34 +5,44 @@ title: Tracking in an iFrame using Google Tag Manager
 tags: [gtm,google tag manager,iframe]
 comments: true
 ---
-Tracking iframes on a website can be tricky.
-Extra care needs to be taken to ensure that traffic is tracked accurately. 
-The 2 most common errors with tracking iframes I have encountered so far is:
+The very first website I was tasked with to track, was riddled with iframes. I'm talking about iframes within iframes, the kind of stuff that I thought was only possible in the 2010 science fiction movie Inception.
+Back then, there wasn't a lot of information available on this topic, so tracking of iframes very quickly became the bane of my existence. 
 
-{: .box-error}
-Recording * double page views** and not being able to retain * campaign or referral attribution**.
+Fastforward to a couple of years later and I still regularly encounter client websites that use iframes and cause tracking nightmares. Since this topic is personal to me, I thought it very fitting to be the first topic to write about.
 
-An iframe is basically a website within a website. In this post, I will refer to the main website as the parent frame and the iframe as the child frame.
 
-Google Analytics will track all page hits of the parent frame by default, but in the case of an iframe, it will only track the page hit of the parent frame and all user behavior within the iframe will be lost. 
+**Why is it so difficult to track iframes?**
+An iframe is basically a website within a website.
+If you only put an analytics tracking snippet on the outer (parent) website, you will be blind to the user interactions happening within the inner (iframe) website, as it iwill only track the page hit of the parent frame.
+If you put the same tracking snippet on the iframe as well, you will get double page views and if the parent website and the iframes are on different domains, you will lose campaign or referral attribution of the hits.
 
-The solution: postMessage
+**Is there a solution?**
+Yes, there are a couple of solutions, I will discuss 2 of my favorite solutions below.
 
-**What do you need to track user behavior within the iframe?**
+## Solution 1: postMessage
+
+postMessage is a browser functionality that allows you to send messages between the iframe and the parent frame (main website).
+When I started my measurement career, the postMessage API was not around. Stuck in my iframe-inception world, I wished for a solution that would allow me to send a message from the child iframe to the parent frame whenever a user interaction happened within the iframe. 
+Looks like dreams do sometimes come true, because these days browsers all support the postMessage API.
+
+So, all you need to do is to send a message from the child iframe to the parent frame whenever a user interaction happened within the iframe. Then you need to listen for the message from the child iframe on the parent frame. The last step is to catch the message on the parent frame and push an event into the DataLayer which can then be used to propagate analytics hits.
+
+**Step-by-step instructions:**
+
+**Pro's:**
+* postMessage provides a safe means of communication between frames on different domains while still offering protection from cross-site scripting attacks.
+* Current browsers fully support the postMessage method.
+* Tracking snippets on the iframe simply send messages to the main website. No page hits are fired from within the iframe, so tracking control all sits with the main (parent) website. This takes care of the double page view tracking as well as campaign/referral attribution issues.
+
+**Con's**
 *  You need to have access to add some tracking snippets to the HTML code of the iframe.
-*  You need to send a message from the child iframe to the parent frame whenever a user interaction happened within the iframe.
-*  You need to listen for the message from the child iframe on the parent frame.
-*  The parent frame needs to catch the message and push an event into the DataLayer.
+
+## Solution 2: customTask
 
 
-**Sending messages from the child iframe to the parent webpage**
 
-The solution is postMessage. This supported browser functionality allows you to send messages between both the iframe and parent window/main website, in most cases circumventing all the problems you would face traditionally with tracking iframes.
-The great aspect of this solution is that the iframe simply sends messages to the main website, no tracking scripts are called within the iframe. The main website, where the tracking takes place, will not encounter session, attribution or access issues, while providing more control of when to fire specific tracking calls for the iframe content..
 
-Cross-Document Messaging with postMessage is designed to provide a safe means of communication between documents on different domains while still offering protection from cross-site scripting attacks. This method can be used with iframes as well as between windows when the window.open method is used by one to open another.
 
-Current browsers fully support the postMessage method.
 
 
 
