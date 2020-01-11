@@ -44,9 +44,8 @@ I already have Google Tag Manager and Google Analytics implemented on my main we
 2. Add the GTM container snippet you created above to your iframe according to [these instructions](https://developers.google.com/tag-manager/quickstart). 
 3. Navigate to the new iframe GTM container and create a new tag:
 
-      **Tag Configuration:**
-      Tag type: Custom HTML
-      Trigger:
+{: .box-note}
+**Tag Configuration:**<br> Tag type: Custom HTML <br> Trigger:
 
 3. Apart from the custom HTML tag you created above, don't implent anything else in this new container.
 
