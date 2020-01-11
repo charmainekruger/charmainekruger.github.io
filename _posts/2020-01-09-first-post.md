@@ -34,9 +34,10 @@ When I started my measurement career, the postMessage API was not around, which 
 * Propagate analytics hits.
 
 **Step-by-step instructions:**
+
 As an example I have created a simple iframe that pulls in a webpage that is hosted on a different domain as source.
 
-<iframe id="testIframe" src="https://phillip-kruger.github.io/testPage.html"></iframe>
+	<iframe id="testIframe" src="https://phillip-kruger.github.io/testPage.html"></iframe>
 
 I already have Google Tag Manager and Google Analytics implemented on my main website.
 
