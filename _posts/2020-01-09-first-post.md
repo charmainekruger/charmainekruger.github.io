@@ -8,7 +8,7 @@ comments: true
 The very first website I was tasked with to track, was riddled with iframes. I'm talking about iframes within iframes, the kind of stuff that I thought was only possible in the 2010 science fiction movie Inception.
 Back then, there wasn't a lot of information available on this topic, so tracking of iframes very quickly became the bane of my existence. 
 
-Fastforward to a couple of years later and I still regularly encounter client websites that use iframes and cause tracking nightmares. Since this topic is personal to me, I thought it very fitting to be the first topic to write about.
+Years later and I still regularly encounter client websites that use iframes and cause tracking nightmares. Since this topic is personal to me, I thought it very fitting to be the first topic to write about.
 
 
 **Why is it so difficult to track iframes?**
@@ -43,11 +43,32 @@ I already have Google Tag Manager and Google Analytics implemented on my main we
 
 1. Create a new Google Tag Manager container for your iframe (you can use the same container or a different container, my personal preference is keeping them in separate containers in the same account).
 2. Add the GTM container snippet you created above to your iframe according to [these instructions](https://developers.google.com/tag-manager/quickstart). 
-3. Navigate to the new iframe GTM container and create a new tag:
+3. Navigate to the new iframe GTM container and create a new tag that fires when a specific user action happens within the iframe. In this scenario, I want to track when the button with id = "myButton" is clicked from within the iframe.
 
 {: .box-note}
-**Tag Configuration:**<br> Tag type: Custom HTML <br> Trigger:
+**Tag Configuration:**<br> Tag type: Custom HTML <br> Trigger: Click - All Elements, Click ID contains "myButton" <br> HTML code: See code box below <br>
 
+```javascript
+<script>
+(function(){
+  try {
+    if(typeof parent != "undefined" && parent != window) {
+    	if(typeof parent.postMessage != "undefined") {
+         var postMessage = JSON.stringify({
+            type: 'iFrame',
+            event: 'iFrameButtonSubmitted',
+            host: '{{Page Hostname}}'
+          })
+          parent.postMessage(postMessage, 'https://charmainekruger.github.io');
+        }
+    }
+  } catch(e){
+    if({{Debug Mode}}) 
+    	console.log(e);
+  };
+})();
+</script>
+```
 3. Apart from the custom HTML tag you created above, don't implent anything else in this new container.
 
 **Pro's:**
