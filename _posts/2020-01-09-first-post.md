@@ -116,6 +116,8 @@ Apart from the custom HTML tag you created above, don't implent anything else in
 </script>"
 ```
 
+Always verify the sender's identity. Any window can send a message to any other window, and you have no guarantees that an unknown sender will not send malicious messages. Having verified identity, however, you still should always verify the syntax of the received message. Otherwise, a security hole in the site you trusted to send only trusted messages could then open a cross-site scripting hole in your site.
+
 **Pro's:**
 * postMessage provides a safe means of communication between frames on different domains while still offering protection from cross-site scripting attacks.
 * Current browsers fully support the postMessage method.
@@ -139,71 +141,4 @@ Apart from the custom HTML tag you created above, don't implent anything else in
 
 
 
-Here's a code chunk:
-
-~~~
-<script type="text/javascript">
-	document.querySelector('button').onclick = function () {
-		// parent.postMessage("message to be sent", "http://the-website-that-will-receive-the-msg.com")
-		parent.postMessage("myevent", "*")
-	};
-</script>
-~~~
-
-And here is the same code with syntax highlighting:
-
-```javascript
-<script>
-(function(){
-    try {
-        if(typeof parent != "undefined" && parent != window) {
-            if(typeof parent.postMessage != "undefined") {
-                var message = {};
-                message["origin"] = {
-                    "type" : "iframe",
-                    "host" : {{Page Hostname}},
-                };
-                var event = "custom.postMessage";
-                // Add description of the event
-                event += ".page";
-                message["event"] = event;
-                // Add custom data
-                message["url"] = {{Page URL}};
-                // Convent message into a string
-                var messageJSON = JSON.stringify(message);
-                //Send message to parent
-                parent.postMessage(messageJSON, "*");
-            }
-        }
-    } catch(err){if({{Debug Mode}}) console.log(err);};
-})();
-</script>
-```
-
-And here is the same code yet again but with line numbers:
-
-{% highlight javascript linenos %}
-var foo = function(x) {
-  return(x + 5);
-}
-foo(3)
-{% endhighlight %}
-
-## Boxes
-You can add notification, warning and error boxes like this:
-
-### Notification
-
-{: .box-note}
-**Note:** This is a notification box.
-
-### Warning
-
-{: .box-warning}
-**Warning:** This is a warning box.
-
-### Error
-
-{: .box-error}
-**Error:** This is an error box.
 
