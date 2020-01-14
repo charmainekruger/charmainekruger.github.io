@@ -43,7 +43,7 @@ I already have Google Tag Manager and Google Analytics implemented on my main we
 
 1. Create a new Google Tag Manager container for your iframe (you can use the same container or a different container, my personal preference is keeping them in separate containers in the same account).
 2. Add the GTM container snippet you created above to your iframe according to [these instructions](https://developers.google.com/tag-manager/quickstart). 
-3. Navigate to the new iframe GTM container and create a new tag that fires when a specific user action happens within the iframe. In this scenario, I want to track when the button with id = "myButton" is clicked from within the iframe.
+3. In the new iframe GTM container, create a new tag that fires when a specific user action happens within the iframe. In this scenario, I want to track when the button with id = "myButton" is clicked from within the iframe.
 
 {: .box-note}
 **Tag Configuration:**<br> Tag type: Custom HTML <br> Trigger: Click - All Elements, Click ID contains "myButton" <br> HTML code: See code box below <br>
@@ -69,7 +69,52 @@ I already have Google Tag Manager and Google Analytics implemented on my main we
 })();
 </script>
 ```
-3. Apart from the custom HTML tag you created above, don't implent anything else in this new container.
+Apart from the custom HTML tag you created above, don't implent anything else in this new container.
+
+4. In your main website GTM container, create a new tag that fires when a user accesses the page that contains the embedded iframe.
+
+{: .box-note}
+**Tag Configuration:**<br> Tag type: Custom HTML <br> Trigger: Page View, Page Path contains 2020-01-09-first-post <br> HTML code: See code box below <br>
+
+```javascript
+<script>
+    (function(window) {
+      createEvent(window, 'message', function(message) {
+        try{
+            var data = JSON.parse(message.data);
+            var dataLayer = window.dataLayer || (window.dataLayer = []);
+          	if(data && typeof data.event != 'undefined' && data.event.indexOf('iFrameButtonSubmitted') >= 0) {
+          
+              if (data.event) {
+                  dataLayer.push({          
+                      'event': data.event,
+                      'postMessageData': data
+                  });      
+              } 
+            }  
+        } catch(e){
+    		if({{Debug Mode}}) 
+    		console.log(e);
+  		};   
+    });    
+    
+    // Event listener    
+    function createEvent(eventListener, event, fx) {      
+        if (eventListener.addEventListener) { 
+          eventListener.addEventListener(event, fx);      
+        } else if (eventListener.attachEvent) {  
+           	eventListener.attachEvent('on' + event, function(event) {          
+        		fx.call(eventListener, event);        
+        	});      
+        } else if (typeof eventListener['on' + event] === 'undefined' || eventListener['on' + event] === null) {    
+            eventListener['on' + event] = function(evt) {          
+        		fx.call(eventListener, event);        
+        	};      
+        }    
+      }  
+    })(window);
+</script>"
+```
 
 **Pro's:**
 * postMessage provides a safe means of communication between frames on different domains while still offering protection from cross-site scripting attacks.
