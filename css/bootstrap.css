@@ -1342,7 +1342,7 @@ a.text-success:hover {
   color: #31708f;
 }
 a.text-info:hover {
-  color: #245269;
+  color: #ff2f7c;
 }
 .text-warning {
   color: #8a6d3b;
@@ -4953,7 +4953,7 @@ a.thumbnail.active {
   border-top-color: #a6e1ec;
 }
 .alert-info .alert-link {
-  color: #245269;
+  color: #ff2f7c;
 }
 .alert-warning {
   color: #8a6d3b;
