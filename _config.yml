@@ -42,7 +42,7 @@ navbar-col: "#F3A5BF"
 navbar-text-col: "#49274A"
 navbar-children-col: "#F172A1"
 page-col: "#F4E7E4"
-link-col: "#F5CCD4"
+link-col: "#49274A"
 hover-col: "FAEAED"
 footer-col: "#F3A5B"
 footer-text-col: "#49274A"
@@ -52,7 +52,7 @@ footer-link-col: "#F5CCD4"
 # instead of colour
 
 navbar-img: "/img/aaa.jpg"
-# footer-img: "/img/bgimage.png"
+footer-img: "/img/aaa.jpg"
 # page-img: "/img/bgimage.png"
 
 # --- Footer options --- #
