@@ -107,7 +107,7 @@ img {
 
 .navbar-custom {
   background-color: {{ site.navbar-col }};
-  height:500px;
+  height:300px;
   border-bottom: 1px solid #EAEAEA;
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   {% if site.navbar-img %}
