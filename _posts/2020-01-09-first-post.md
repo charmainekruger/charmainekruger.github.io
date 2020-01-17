@@ -3,8 +3,8 @@ layout: post
 title: Tracking in an iFrame using Google Tag Manager
 #subtitle: Each post also has a subtitle
 tags: [gtm,google tag manager,iframe]
-image: "/images/jakartaee.jpg"
-bigimg: "/images/Proposed_namespace_Jakarta/banner.jpg"
+image: "/img/iframe1.jpeg"
+bigimg: "/img/iframe1.jpeg"
 comments: true
 ---
 The very first website I was tasked with to track, was riddled with iframes. I'm talking about iframes within iframes, the kind of stuff that I thought was only possible in the 2010 science fiction movie Inception.
