@@ -3,7 +3,6 @@ layout: post
 title: Tracking in an iFrame using Google Tag Manager
 #subtitle: Each post also has a subtitle
 tags: [gtm,google tag manager,iframe]
-image: "/img/iframe1.jpeg"
 bigimg: "/img/iframe1.jpeg"
 comments: true
 ---
