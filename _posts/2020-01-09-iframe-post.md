@@ -6,7 +6,7 @@ tags: [gtm,google tag manager,iframe]
 bigimg: "/img/iframe1.jpeg"
 comments: true
 ---
-The very first website I was tasked with to track, was riddled with iframes. I'm talking about iframes within iframes, the kind of stuff that I thought was only possible in the 2010 science fiction movie Inception.
+Iframes might be old technology, but just like the Beetle, they are still haning around.  The very first website I was tasked with to track, was riddled with iframes. I'm talking about iframes within iframes, the kind of stuff that I thought was only possible in the 2010 science fiction movie Inception.
 Back then, there wasn't a lot of information available on this topic, so tracking of iframes very quickly became the bane of my existence. 
 
 Years later and I still regularly encounter client websites that use iframes and cause tracking nightmares. Since this topic is personal to me, I thought it very fitting to be the first topic to write about.
@@ -20,7 +20,7 @@ If you put the same tracking snippet on the iframe as well, you will get double 
 
 **Is there a solution?**
 
-Yes, there are a couple of solutions, I will discuss 2 of my favorite solutions below.
+Yes, there are a couple of solutions, I will elaborate on one of my favorite solutions below.
 
 ## Solution 1: postMessage
 
@@ -57,10 +57,10 @@ I already have Google Tag Manager and Google Analytics implemented on my main we
     	if(typeof parent.postMessage != "undefined") {
          var postMessage = JSON.stringify({
             type: 'iFrame',
-            event: 'iFrameButtonSubmitted',
-            host: '{{Page Hostname}}'
+            host: '{{Page Hostname}}', 
+            event: 'iFrameButtonSubmitted'
           })
-          parent.postMessage(postMessage, 'https://charmainekruger.github.io');
+          parent.postMessage(postMessage, 'https://www.charmaine-kruger.com');
         }
     }
   } catch(e){
@@ -75,17 +75,16 @@ Apart from the custom HTML tag you created above, don't implent anything else in
 4. In your main website GTM container, create a new tag that fires when a user accesses the page that contains the embedded iframe.
 
 {: .box-note}
-**Tag Configuration:**<br> Tag type: Custom HTML <br> Trigger: Page View, Page Path contains 2020-01-09-first-post <br> HTML code: See code box below <br>
+**Tag Configuration:**<br> Tag type: Custom HTML <br> Trigger: Page View, Page Path contains 2020-01-09-iframe-post <br> HTML code: See code box below <br>
 
 ```javascript
 <script>
-    (function(window) {
-      createEvent(window, 'message', function(message) {
+  (function(window) {
+      receiveMessage(window, 'message', function(message) {
         try{
             var data = JSON.parse(message.data);
             var dataLayer = window.dataLayer || (window.dataLayer = []);
           	if(data && typeof data.event != 'undefined' && data.event.indexOf('iFrameButtonSubmitted') >= 0) {
-          
               if (data.event) {
                   dataLayer.push({          
                       'event': data.event,
@@ -98,22 +97,24 @@ Apart from the custom HTML tag you created above, don't implent anything else in
     		console.log(e);
   		};   
     });    
-    
-    // Event listener    
-    function createEvent(eventListener, event, fx) {      
-        if (eventListener.addEventListener) { 
-          eventListener.addEventListener(event, fx);      
-        } else if (eventListener.attachEvent) {  
-           	eventListener.attachEvent('on' + event, function(event) {          
-        		fx.call(eventListener, event);        
-        	});      
-        } else if (typeof eventListener['on' + event] === 'undefined' || eventListener['on' + event] === null) {    
-            eventListener['on' + event] = function(evt) {          
-        		fx.call(eventListener, event);        
-        	};      
-        }    
-      }  
-    })(window);
+ 
+       function receiveMessage(eventListener, event, fx) {
+          if (event.origin !== "https://www.charmaine-kruger.com") //always verify the sender's identity
+              return;
+
+          if (eventListener.addEventListener) { 
+                eventListener.addEventListener(event, fx);      
+          } else if (eventListener.attachEvent) {  
+                  eventListener.attachEvent('on' + event, function(event) {          
+                      fx.call(eventListener, event);        
+                  });      
+          } else if (typeof eventListener['on' + event] === 'undefined' || eventListener['on' + event] === null) {    
+                  eventListener['on' + event] = function(evt) {          
+                      fx.call(eventListener, event);        
+                  };      
+          }    
+      }
+ })(window);
 </script>"
 ```
 
@@ -126,18 +127,6 @@ Always verify the sender's identity. Any window can send a message to any other 
 
 **Con's**
 *  You need to have access to add some tracking snippets to the HTML code of the iframe.
-
-
-
-
-
-## Solution 2: customTask
-
-
-
-
-
-
 
 
 
