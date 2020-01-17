@@ -20,7 +20,7 @@ If you put the same tracking snippet on the iframe as well, you will get double 
 
 **Is there a solution?**
 
-Yes, there are a couple of solutions, I will elaborate on one of my favorite solutions below.
+Yes, there are a couple of solutions out there. I will elaborate on one of the solutions below. Even though this solution is not perfect, I have seen drastic improvements in the accuracy of data around tracking iframes, after implementing this solution. And we are talking about iframes here, nothing about them is easy or perfect :) 
 
 ## Solution 1: postMessage
 
@@ -58,6 +58,7 @@ I already have Google Tag Manager and Google Analytics implemented on my main we
          var postMessage = JSON.stringify({
             type: 'iFrame',
             host: '{{Page Hostname}}', 
+            origin: 'https://www.charmaine-kruger.com',
             event: 'iFrameButtonSubmitted'
           })
           parent.postMessage(postMessage, 'https://www.charmaine-kruger.com');
@@ -83,9 +84,13 @@ Apart from the custom HTML tag you created above, don't implent anything else in
       receiveMessage(window, 'message', function(message) {
         try{
             var data = JSON.parse(message.data);
+            if (data.origin !== "https://www.charmaine-kruger.com") //always verify the sender's identity
+              	return;
+          
             var dataLayer = window.dataLayer || (window.dataLayer = []);
           	if(data && typeof data.event != 'undefined' && data.event.indexOf('iFrameButtonSubmitted') >= 0) {
               if (data.event) {
+                console.log("data.event="+data.event);
                   dataLayer.push({          
                       'event': data.event,
                       'postMessageData': data
@@ -99,9 +104,6 @@ Apart from the custom HTML tag you created above, don't implent anything else in
     });    
  
        function receiveMessage(eventListener, event, fx) {
-          if (event.origin !== "https://www.charmaine-kruger.com") //always verify the sender's identity
-              return;
-
           if (eventListener.addEventListener) { 
                 eventListener.addEventListener(event, fx);      
           } else if (eventListener.attachEvent) {  
@@ -120,6 +122,14 @@ Apart from the custom HTML tag you created above, don't implent anything else in
 
 Always verify the sender's identity. Any window can send a message to any other window, and you have no guarantees that an unknown sender will not send malicious messages. Having verified identity, however, you still should always verify the syntax of the received message. Otherwise, a security hole in the site you trusted to send only trusted messages could then open a cross-site scripting hole in your site.
 
+Once you click on the button within the iframe, a iFrameButtonSubmitted event will be pushed into the datalayer:
+
+So the only thing left to do is to set up a tag that actually sends data to GA once the event appears in the datalayer.
+{: .box-note}
+**Tag Configuration:**<br> Tag type: Event, Category = iframe, Action = Clicked on button_{{Click Text}}, Label = {{Page Path}} <br> Trigger: Custome Event, Event name = iFrameButtonSubmitted <br> 
+
+And that is it, you should see the data flow into your GA realtime view now.
+
 **Pro's:**
 * postMessage provides a safe means of communication between frames on different domains while still offering protection from cross-site scripting attacks.
 * Current browsers fully support the postMessage method.
@@ -127,8 +137,4 @@ Always verify the sender's identity. Any window can send a message to any other 
 
 **Con's**
 *  You need to have access to add some tracking snippets to the HTML code of the iframe.
-
-
-
-
 
