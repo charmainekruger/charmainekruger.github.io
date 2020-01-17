@@ -125,8 +125,9 @@ Always verify the sender's identity. Any window can send a message to any other 
 Once you click on the button within the iframe, a iFrameButtonSubmitted event will be pushed into the datalayer:
 
 So the only thing left to do is to set up a tag that actually sends data to GA once the event appears in the datalayer.
+
 {: .box-note}
-**Tag Configuration:**<br> Tag type: Event, Category = iframe, Action = Clicked on button_{{Click Text}}, Label = {{Page Path}} <br> Trigger: Custome Event, Event name = iFrameButtonSubmitted <br> 
+**Tag Configuration:**<br> Tag type: Event <br> Trigger: Custome Event, Event name = iFrameButtonSubmitted <br> 
 
 And that is it, you should see the data flow into your GA realtime view now.
 
