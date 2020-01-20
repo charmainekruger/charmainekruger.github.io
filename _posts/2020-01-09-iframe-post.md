@@ -6,11 +6,10 @@ tags: [gtm,google tag manager,iframe]
 bigimg: "/img/iframe1.jpeg"
 comments: true
 ---
-Iframes might be old technology, but just like the Beetle, they are still haning around.  The very first website I was tasked with to track, was riddled with iframes. I'm talking about iframes within iframes, the kind of stuff that I thought was only possible in the 2010 science fiction movie Inception.
+Iframes might be old technology, but just like the Beetle, they are still hanging around.  One of the first websites I had to track, was riddled with iframes. I'm talking about iframes within iframes, the kind of stuff that I thought was only possible in the 2010 science fiction movie Inception.
 Back then, there wasn't a lot of information available on this topic, so tracking of iframes very quickly became the bane of my existence. 
 
-Years later and I still regularly encounter client websites that use iframes and cause tracking nightmares. Since this topic is personal to me, I thought it very fitting to be the first topic to write about.
-
+Years later, I still regularly encounter client websites that use iframes and cause tracking nightmares. 
 
 **Why is it so difficult to track iframes?**
 
@@ -20,9 +19,9 @@ If you put the same tracking snippet on the iframe as well, you will get double 
 
 **Is there a solution?**
 
-Yes, there are a couple of solutions out there. I will elaborate on one of the solutions below. Even though this solution is not perfect, I have seen drastic improvements in the accuracy of data around tracking iframes, after implementing this solution. And we are talking about iframes here, nothing about them is easy or perfect :) 
+Yes, there are a couple of solutions out there. I will only elaborate on one of the solutions below. Even though this solution is not perfect, I have seen drastic improvements in the accuracy of data around tracking iframes, after implementing this solution. And we are talking about iframes here, nothing about them is easy or perfect :) 
 
-## Solution 1: postMessage
+## Solution: postMessage
 
 postMessage is a browser functionality that allows you to send messages between the iframe and the parent frame (main website).
 When I started my measurement career, the postMessage API was not around, which left me stuck in my iframe-inception world, but these days browsers all support the postMessage API.
@@ -32,7 +31,7 @@ When I started my measurement career, the postMessage API was not around, which 
 * Send a message from the child iframe to the parent frame whenever a user interaction happened within the iframe. 
 * Listen for the message from the child iframe on the parent frame. 
 * Catch the message on the parent frame and push an event into the DataLayer.
-* Propagate analytics hits.
+* Propagate analytics hits to Google Analytics.
 
 **Step-by-step instructions:**
 
@@ -53,20 +52,15 @@ I already have Google Tag Manager and Google Analytics implemented on my main we
 <script>
 (function(){
   try {
-    if(typeof parent != "undefined" && parent != window) {
-    	if(typeof parent.postMessage != "undefined") {
-         var postMessage = JSON.stringify({
-            type: 'iFrame',
-            host: '{{Page Hostname}}', 
-            origin: 'https://www.charmaine-kruger.com',
-            event: 'iFrameButtonSubmitted'
-          })
-          parent.postMessage(postMessage, 'https://www.charmaine-kruger.com');
-        }
+    if(typeof parent != "undefined" && typeof parent.postMessage != "undefined" && parent != window) {
+    	var postMessage = JSON.stringify({
+            host: "{{Page Hostname}}", 
+            event: "iFrameButtonSubmitted"
+        })
+        parent.postMessage(postMessage, "https://www.charmaine-kruger.com");
     }
   } catch(e){
-    if({{Debug Mode}}) 
-    	console.log(e);
+    console.log(e);
   };
 })();
 </script>
@@ -80,44 +74,38 @@ Apart from the custom HTML tag you created above, don't implent anything else in
 
 ```javascript
 <script>
-  (function(window) {
-      receiveMessage(window, 'message', function(message) {
-        try{
-            var data = JSON.parse(message.data);
-            if (data.origin !== "https://www.charmaine-kruger.com") //always verify the sender's identity
-              	return;
-          
-            var dataLayer = window.dataLayer || (window.dataLayer = []);
-          	if(data && typeof data.event != 'undefined' && data.event.indexOf('iFrameButtonSubmitted') >= 0) {
-              if (data.event) {
-                console.log("data.event="+data.event);
-                  dataLayer.push({          
-                      'event': data.event,
-                      'postMessageData': data
-                  });      
-              } 
-            }  
-        } catch(e){
-    		if({{Debug Mode}}) 
-    		console.log(e);
-  		};   
-    });    
- 
-       function receiveMessage(eventListener, event, fx) {
-          if (eventListener.addEventListener) { 
-                eventListener.addEventListener(event, fx);      
-          } else if (eventListener.attachEvent) {  
-                  eventListener.attachEvent('on' + event, function(event) {          
-                      fx.call(eventListener, event);        
-                  });      
-          } else if (typeof eventListener['on' + event] === 'undefined' || eventListener['on' + event] === null) {    
-                  eventListener['on' + event] = function(evt) {          
-                      fx.call(eventListener, event);        
-                  };      
-          }    
-      }
- })(window);
-</script>"
+  (function() {
+    try{
+        if(typeof window.addEventListener !== "undefined"){
+          window.addEventListener('message', function(e) {
+            getMessage(e);
+          });	
+        } else if (typeof window.attachEvent !== 'undefined') {
+          window.attachEvent('on' + 'message', function(e) {
+            getMessage(e);
+          });
+        }
+    }catch(e){
+    	console.log(e);
+    }
+    var getMessage = function(event){
+    	try{
+           	if(typeof event.origin != "undefined" && event.origin == "https://www2.phillip-kruger.com"){ //always check the message origin
+              if(typeof event.data != "undefined"){
+                  var message = JSON.parse(event.data);  
+                  if(message && dataLayer){
+                    	dataLayer.push(message);  
+                  }
+               }
+            }else{
+            	return;
+            }
+        }catch(e){
+        	console.log(e);
+        };
+    };
+ })();
+</script>
 ```
 
 Always verify the sender's identity. Any window can send a message to any other window, and you have no guarantees that an unknown sender will not send malicious messages. Having verified identity, however, you still should always verify the syntax of the received message. Otherwise, a security hole in the site you trusted to send only trusted messages could then open a cross-site scripting hole in your site.
