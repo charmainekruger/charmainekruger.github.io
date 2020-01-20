@@ -50,18 +50,26 @@ I already have Google Tag Manager and Google Analytics implemented on my main we
 
 ```javascript
 <script>
-(function(){
-  try {
-    if(typeof parent != "undefined" && typeof parent.postMessage != "undefined" && parent != window) {
-    	var postMessage = JSON.stringify({
-            host: "{{Page Hostname}}", 
-            event: "iFrameButtonSubmitted"
-        })
-        parent.postMessage(postMessage, "https://www.charmaine-kruger.com");
-    }
-  } catch(e){
-    console.log(e);
-  };
+(function() {
+   try {
+      if (typeof parent !=
+         "undefined" && typeof parent
+         .postMessage !=
+         "undefined" && parent !=
+         window) {
+         var postMessage = JSON
+            .stringify({
+               host: "{{Page Hostname}}",
+               event: "iFrameButtonSubmitted"
+            })
+         parent.postMessage(
+            postMessage,
+            "https://www.charmaine-kruger.com"
+            );
+      }
+   } catch (e) {
+      console.log(e);
+   };
 })();
 </script>
 ```
@@ -75,36 +83,55 @@ Apart from the custom HTML tag you created above, don't implent anything else in
 ```javascript
 <script>
   (function() {
-    try{
-        if(typeof window.addEventListener !== "undefined"){
-          window.addEventListener('message', function(e) {
-            getMessage(e);
-          });	
-        } else if (typeof window.attachEvent !== 'undefined') {
-          window.attachEvent('on' + 'message', function(e) {
-            getMessage(e);
-          });
-        }
-    }catch(e){
-    	console.log(e);
-    }
-    var getMessage = function(event){
-    	try{
-           	if(typeof event.origin != "undefined" && event.origin == "https://www2.phillip-kruger.com"){ //always check the message origin
-              if(typeof event.data != "undefined"){
-                  var message = JSON.parse(event.data);  
-                  if(message && dataLayer){
-                    	dataLayer.push(message);  
-                  }
+   try {
+      if (typeof window
+         .addEventListener !==
+         "undefined") {
+         window.addEventListener(
+            'message',
+            function(e) {
+               getMessage(e);
+            });
+      } else if (typeof window
+         .attachEvent !== 'undefined'
+      ) {
+         window.attachEvent('on' +
+            'message',
+            function(e) {
+               getMessage(e);
+            });
+      }
+   } catch (e) {
+      console.log(e);
+   }
+   var getMessage = function(event) {
+      try {
+         if (typeof event
+            .origin !=
+            "undefined" && event
+            .origin ==
+            "https://www2.phillip-kruger.com"
+         ) { //always check the message origin
+            if (typeof event
+               .data !=
+               "undefined") {
+               var message = JSON
+                  .parse(event
+                     .data);
+               if (message &&
+                  dataLayer) {
+                  dataLayer.push(
+                     message);
                }
-            }else{
-            	return;
             }
-        }catch(e){
-        	console.log(e);
-        };
-    };
- })();
+         } else {
+            return;
+         }
+      } catch (e) {
+         console.log(e);
+      };
+   };
+})();
 </script>
 ```
 
