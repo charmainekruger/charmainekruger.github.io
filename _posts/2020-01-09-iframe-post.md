@@ -6,6 +6,9 @@ tags: [gtm,google tag manager,iframe]
 bigimg: "/img/iframe1.jpeg"
 comments: true
 ---
+
+**Disclaimer:** This is my personal opinion and does not represent the view of my employer.
+
 Iframes might be old technology, but just like the Beetle, they are still hanging around.  One of the first websites I had to track, was riddled with iframes. I'm talking about iframes within iframes, the kind of stuff that I thought was only possible in the 2010 science fiction movie Inception.
 Back then, there wasn't a lot of information available on this topic, so tracking of iframes very quickly became the bane of my existence. 
 
